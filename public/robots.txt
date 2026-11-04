@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /demos/
+
+Sitemap: https://mokshaengine.com/sitemap.xml

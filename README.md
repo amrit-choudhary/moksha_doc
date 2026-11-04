@@ -2,6 +2,7 @@
 
 The site for the [Moksha game engine](https://github.com/amrit-choudhary/moksha): engine overview, docs and playable
 web demos of the [samples](https://github.com/amrit-choudhary/moksha_samples). Static output, built with Astro.
+Live at https://mokshaengine.com, deployed by Cloudflare Pages on each push to `main`.
 
 ## Run it
 Needs Node 22.23 or newer.

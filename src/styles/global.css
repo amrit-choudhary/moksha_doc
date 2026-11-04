@@ -135,6 +135,9 @@ code, pre { font-family: var(--mono); }
   .game-input { white-space: normal; }
 }
 
+/* The code theme's comment colour is too dim to read on this background. */
+.astro-code span[style*="#8B8B8B94"] { color: var(--muted) !important; }
+
 /* Long-form docs content. */
 .prose { min-width: 0; max-width: 74ch; }
 .prose h2 { margin: 2.6em 0 0.6em; font-size: 1.875rem; }

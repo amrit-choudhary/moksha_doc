@@ -4,6 +4,18 @@ import Base from '../layouts/Base.astro';
 import GameList from '../components/GameList.astro';
 import { ENGINE_REPO } from '../data/site';
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: 'Moksha',
+  description: 'A handcrafted, open source C++ game engine with multiplayer, built for AI to create games with.',
+  url: new URL('/', Astro.site).href,
+  codeRepository: ENGINE_REPO,
+  programmingLanguage: 'C++',
+  license: 'https://opensource.org/license/mit',
+  author: { '@type': 'Person', name: 'Amrit Choudhary' },
+};
+
 const snippet = `// game_main.cpp
 #include "game/game_main_class.h"
 #include "moksha/client/game/game_factory.h"
@@ -72,7 +84,7 @@ const principles = [
 ];
 ---
 
-<Base>
+<Base structuredData={structuredData}>
   <div class="page">
     <section class="hero">
       <div class="hero-text">
@@ -87,7 +99,7 @@ const principles = [
         <p class="status">Version 0.1, in early development by one person.</p>
       </div>
       <figure class="hero-art">
-        <img src="/images/galaxy.jpg" width="900" height="780" alt="A spiral galaxy of thousands of sprites, drawn by the Graphics Stress sample." />
+        <img src="/images/galaxy.jpg" fetchpriority="high" width="900" height="780" alt="A spiral galaxy of thousands of sprites, drawn by the Graphics Stress sample." />
         <figcaption>Graphics Stress, one of the demos below.</figcaption>
       </figure>
     </section>

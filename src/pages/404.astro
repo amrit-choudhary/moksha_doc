@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found" description="This page doesn't exist on the Moksha game engine site." noindex>
+  <div class="page missing">
+    <h1>Page not found</h1>
+    <p>This page doesn’t exist or has moved.</p>
+    <p class="links"><a href="/">Home</a> <a href="/play/">Play the demos</a> <a href="/docs/">Read the docs</a></p>
+  </div>
+</Base>
+
+<style>
+  .missing { padding-top: clamp(48px, 10vw, 112px); }
+  h1 { font-size: clamp(2.75rem, 7vw, 4.5rem); }
+  p { margin-top: 18px; color: var(--muted); font-size: 1.0625rem; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+</style>

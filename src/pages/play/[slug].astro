@@ -17,9 +17,21 @@ interface Props {
 
 const { game, next } = Astro.props;
 const portrait = game.height > game.width;
+const description = `${game.blurb} Play ${game.title} in your browser, made with the Moksha C++ game engine.`;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: game.title,
+  description: game.about,
+  url: new URL(`/play/${game.slug}/`, Astro.site).href,
+  image: new URL(`/images/games/${game.slug}.jpg`, Astro.site).href,
+  gamePlatform: 'Web browser with WebGPU',
+  isAccessibleForFree: true,
+  author: { '@type': 'Person', name: 'Amrit Choudhary' },
+};
 ---
 
-<Base title={game.title} description={game.about}>
+<Base title={`Play ${game.title}`} description={description} structuredData={structuredData}>
   <div class:list={['page', 'game', { portrait }]}>
     <header class="head">
       <p class="eyebrow"><a href="/play/">Play</a> / {game.kind}</p>
