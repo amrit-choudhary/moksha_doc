@@ -57,7 +57,7 @@ export const games: Game[] = [
     kind: 'Stress test',
     blurb: 'Hold out against growing waves, then spawn thousands more.',
     about:
-      'An auto-firing arena built to push the renderer. Enemy waves keep growing, and you can add more by hand to see where the frame rate falls.',
+      'An auto-firing arena built to push the renderer. Enemy waves keep growing, and you can add more by hand, up to 99,000. This build has no on-screen counters.',
     width: 1280,
     height: 720,
     inputLabel: 'Keyboard required',

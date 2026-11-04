@@ -3,7 +3,7 @@ title: "Cookbook"
 description: "Copyable recipes, one per engine system. Class and member names are placeholders."
 order: 3
 source: "docs/game_cookbook.md"
-sourceCommit: "d18f364"
+sourceCommit: "3e4aa96"
 ---
 
 ## Minimal game: one sprite moved with the arrow keys
@@ -352,6 +352,8 @@ ME::DebugSystem::ScreenPrintSlot(3, "Enemies: 12");          // persistent row; 
 ME::DebugSystem::ScreenPrint("Level up!", 2.0f);             // fades after 2 s
 ME::Log("Loaded level ", levelIndex);                        // stdout; also LogWarning, LogError
 ```
+The overlay is on by default in Debug and off in Release (any build with `NDEBUG`). Either way, `[debug] debugOverlay=0`
+or `1` in `settings.ini` decides. While it's off the print calls do nothing, so don't put what players need on it.
 
 ## Multiplayer messages
 Native platforms only: browsers have no raw sockets, so on web `gameClient` never connects.
@@ -374,5 +376,5 @@ Server side: see [Servers and networking](/docs/servers/), and `net_test` and `s
 
 ## Startup settings
 `resources/config/settings.ini` keys: `[window] title width height vsync fullscreen`, `[time] fixedStepFPS`,
-`[net] serverIP serverPort contentServerIP contentServerPort`. The same keys work on the command line
+`[net] serverIP serverPort contentServerIP contentServerPort`, `[debug] debugOverlay`. The same keys work on the command line
 (`--width=800`). Read the result from `engine->config`.
