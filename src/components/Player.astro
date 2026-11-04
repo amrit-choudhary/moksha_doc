@@ -17,8 +17,8 @@ const { game } = Astro.props;
 >
   <div class="stage" style={`aspect-ratio: ${game.width} / ${game.height}; max-width: ${game.width}px`}>
     <div class="cover" style={`--poster: url(/images/games/${game.slug}.jpg)`}>
-      <button class="button start" type="button">Play {game.title}</button>
-      <p class="cover-note" data-role="note">Up to 3 MB. Needs WebGPU.</p>
+      <button class="button start" type="button" aria-label={`Start ${game.title}`}>Start</button>
+      <p class="cover-note" data-role="note"></p>
       {game.needsKeyboard && <p class="cover-note touch-only">This game needs a physical keyboard.</p>}
       <noscript><p class="cover-note">Playing needs JavaScript.</p></noscript>
     </div>
@@ -53,6 +53,7 @@ const { game } = Astro.props;
     background: linear-gradient(rgb(5 5 5 / 0.72), rgb(5 5 5 / 0.72)), var(--poster) center / cover;
   }
   .cover-note { max-width: 34ch; color: var(--text); font-size: 0.875rem; }
+  .cover-note:empty { display: none; }
   .touch-only { display: none; }
   @media (hover: none) and (pointer: coarse) {
     .touch-only { display: block; }
