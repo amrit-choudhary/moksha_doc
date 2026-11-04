@@ -11,11 +11,11 @@ const { game } = Astro.props;
 <moksha-player
   class="player"
   data-title={game.title}
-  data-src={`/demos/${game.folder}/index.html`}
+  data-src={`/demos/${game.folder}/`}
   data-width={game.width}
   data-height={game.height}
 >
-  <div class="stage" style={`aspect-ratio: ${game.width} / ${game.height}`}>
+  <div class="stage" style={`aspect-ratio: ${game.width} / ${game.height}; max-width: ${game.width}px`}>
     <div class="cover" style={`--poster: url(/images/games/${game.slug}.jpg)`}>
       <button class="button start" type="button">Play {game.title}</button>
       <p class="cover-note" data-role="note">Up to 3 MB. Needs WebGPU.</p>
@@ -88,6 +88,8 @@ const { game } = Astro.props;
 
       this.applySize();
       window.addEventListener('resize', () => this.onResize());
+      // Safari can run this before the stylesheet arrives, when this element has no width yet, so size it again once it does.
+      new ResizeObserver(() => this.onResize()).observe(this);
       window.addEventListener('focus', () => this.updateHint());
       window.addEventListener('blur', () => setTimeout(() => this.updateHint(), 0));
       document.addEventListener('pointerdown', () => setTimeout(() => this.updateHint(), 0));
@@ -109,7 +111,9 @@ const { game } = Astro.props;
     }
 
     applySize() {
-      this.size = this.measure();
+      const size = this.measure();
+      if (!size.width) return;
+      this.size = size;
       this.stage.style.width = `${this.size.width}px`;
       this.stage.style.height = `${this.size.height}px`;
       this.bar.style.width = `${this.size.width}px`;

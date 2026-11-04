@@ -20,7 +20,7 @@ pages, but the games won't start.
   `npm run sync:demos -- <moksha_samples/dist>`. The builds in `public/demos/` are committed, because a hosting
   provider can't build them.
 - **Game text and order:** `src/data/games.ts`. Adding a game also means adding its folder to `scripts/sync_demos.mjs`
-  and its images to `public/images/games/`.
+  and its images to `public/images/games/`, and its `.data` file to `public/_headers`.
 - **Docs:** `src/content/docs/`. These are adapted from the engine repo, not generated. Each page's frontmatter records
   its source files and commit, so `git diff <sourceCommit> -- <source>` in the engine shows what to bring across.
 
