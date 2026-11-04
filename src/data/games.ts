@@ -1,0 +1,135 @@
+import { SAMPLES_REPO } from './site';
+
+export interface Control {
+  input: string;
+  action: string;
+}
+
+export interface Game {
+  slug: string;
+  folder: string;
+  title: string;
+  kind: string;
+  blurb: string;
+  about: string;
+  width: number;
+  height: number;
+  inputLabel: string;
+  needsKeyboard: boolean;
+  controls: Control[];
+  shows: string[];
+  note?: string;
+  source: string;
+}
+
+const source = (folder: string) => `${SAMPLES_REPO}/tree/main/${folder}`;
+
+// Display order. width and height are each game's configured window size.
+export const games: Game[] = [
+  {
+    slug: 'tower-climb',
+    folder: 'tower_climb',
+    title: 'Tower Climb',
+    kind: 'Arcade',
+    blurb: 'Leap between two walls and climb as high as you can.',
+    about:
+      'An endless portrait climber. Leap from wall to wall and dodge the crawlers and falling anvils. Your best height is saved in this browser.',
+    width: 450,
+    height: 800,
+    inputLabel: 'Touch or keyboard',
+    needsKeyboard: false,
+    controls: [
+      { input: 'Click or tap left or right half', action: 'Jump to that wall' },
+      { input: 'Left / Right, or A / D', action: 'Jump to that wall' },
+    ],
+    shows: [
+      'A recycled, scrolling world',
+      'Collision layers and callbacks',
+      'Audio and UI',
+      'Saved data, kept in the browser',
+    ],
+    source: source('tower_climb'),
+  },
+  {
+    slug: 'survivors',
+    folder: 'survivors',
+    title: 'Survivors',
+    kind: 'Stress test',
+    blurb: 'Hold out against growing waves, then spawn thousands more.',
+    about:
+      'An auto-firing arena built to push the renderer. Enemy waves keep growing, and you can add more by hand to see where the frame rate falls.',
+    width: 1280,
+    height: 720,
+    inputLabel: 'Keyboard required',
+    needsKeyboard: true,
+    controls: [
+      { input: 'W A S D', action: 'Move' },
+      { input: 'G', action: 'Toggle god mode' },
+      { input: 'B', action: 'Spawn 1,000 enemies' },
+    ],
+    shows: [
+      'Instanced sprites, up to 99,000 enemies',
+      'Object pooling',
+      'Layered collision',
+      'Overlapping sound effects and timers',
+    ],
+    note: 'Native baseline: 60 fps up to about 60,000 enemies on an M3 MacBook Air with Metal 4 (Release build, 60 Hz display, measured 2026-10-27). There is no measured figure for the web build yet.',
+    source: source('survivors'),
+  },
+  {
+    slug: 'evolution',
+    folder: 'evolution',
+    title: 'Evolution',
+    kind: 'Simulation',
+    blurb: 'Creatures roam and reproduce across a procedural landscape.',
+    about:
+      'A sandbox with no goal and no sound. Perlin-noise terrain is populated by creatures that move and reproduce. It starts with 1,000 and has room for 20,000. Pan around and watch.',
+    width: 1200,
+    height: 900,
+    inputLabel: 'Keyboard required',
+    needsKeyboard: true,
+    controls: [{ input: 'W A S D', action: 'Move the camera' }],
+    shows: ['Instanced atlas sprites', 'Procedural terrain from Perlin noise', 'Colliders at scale'],
+    source: source('evolution'),
+  },
+  {
+    slug: 'graphics-stress',
+    folder: 'graphics_stress',
+    title: 'Graphics Stress',
+    kind: 'Benchmark',
+    blurb: 'A turning spiral galaxy, with dials for every render path.',
+    about:
+      'A benchmark you can look at. Raise the load on each render path until the frame rate drops: instances, moving instances, overdraw, UI panels and UI text. Plain sprites add draw calls.',
+    width: 450,
+    height: 800,
+    inputLabel: 'Touch or mouse',
+    needsKeyboard: false,
+    controls: [
+      { input: '^ and v buttons', action: 'Select a load' },
+      { input: '- and + buttons', action: 'Change it' },
+    ],
+    shows: ['Instancing up to 100,000 stars', 'Overdraw', 'UI load', 'Sprite draw calls'],
+    source: source('graphics_stress'),
+  },
+  {
+    slug: 'ui-demo',
+    folder: 'ui_demo',
+    title: 'UI Demo',
+    kind: 'Tech demo',
+    blurb: 'A small tour of the engine’s UI widgets.',
+    about:
+      'Panels, labels, images and a button, laid out with the engine’s retained-mode UI and driven by input.',
+    width: 1200,
+    height: 900,
+    inputLabel: 'Keyboard for most controls',
+    needsKeyboard: true,
+    controls: [
+      { input: 'A / D', action: 'Change health' },
+      { input: 'W / S', action: 'Change score' },
+      { input: 'W A S D, held', action: 'Move the image' },
+      { input: 'On-screen button', action: 'Add 50' },
+    ],
+    shows: ['Panels, labels, images and buttons', 'Text rendering', 'Anchors and pivots', 'Input'],
+    source: source('ui_demo'),
+  },
+];

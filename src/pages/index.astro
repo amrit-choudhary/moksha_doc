@@ -1,0 +1,206 @@
+---
+import { Code } from 'astro:components';
+import Base from '../layouts/Base.astro';
+import GameList from '../components/GameList.astro';
+import { ENGINE_REPO } from '../data/site';
+
+const snippet = `// game_main.cpp
+#include "game/game_main_class.h"
+#include "moksha/client/game/game_factory.h"
+
+MOKSHA_GAME(MyGame::GameMain, "My Game")
+
+// game/game_main_class.cpp
+void MyGame::GameMain::Update(double deltaTime) {
+    ME::Game::Update(deltaTime);
+    const float speed = 80.0f * static_cast<float>(deltaTime);
+    ME::Vec3 pos = mainScene->GetPlayer().GetPosition();
+    if (engine->input->GetKeyDown(ME::Input::KeyCode::LeftArrow)) pos.x -= speed;
+    if (engine->input->GetKeyDown(ME::Input::KeyCode::RightArrow)) pos.x += speed;
+    if (engine->input->GetKeyDown(ME::Input::KeyCode::UpArrow)) pos.y += speed;
+    if (engine->input->GetKeyDown(ME::Input::KeyCode::DownArrow)) pos.y -= speed;
+    mainScene->GetPlayer().SetPosition(pos);
+}`;
+
+const pillars = [
+  {
+    name: 'Handcrafted',
+    text: 'Renderers written directly against DirectX 12, Metal 4 and WebGPU. Its own scene, UI, collision, networking and tools, shaped by one developer.',
+  },
+  {
+    name: 'Minimal, no dependencies',
+    text: 'About 26,000 lines of engine code. The build fetches nothing and there are no packages to install. A few small libraries, such as miniaudio and cJSON, sit in the source tree.',
+  },
+  {
+    name: 'Built for AI',
+    text: 'Made so AI agents can create games quickly. The rules, traps and recipes are written down for them, every game has the same shape, and headless builds let a game run without a window.',
+    link: { href: '/docs/concepts/', label: 'Read what an agent reads' },
+  },
+  {
+    name: 'Fully open source',
+    text: 'The engine and every sample on this page are on GitHub under the MIT licence.',
+    link: { href: ENGINE_REPO, label: 'See the source' },
+  },
+];
+
+const features = [
+  ['Rendering', 'Native DirectX 12, Metal 4 and WebGPU backends draw sprites and UI, with up to 100,000 instanced sprites. A headless backend runs the same game code with no window.'],
+  ['Scene', 'Plain struct-of-arrays data with fixed capacities, read by the renderer each frame. Deliberately not an ECS.'],
+  ['App loop', 'The engine owns the entry point and the frame. Your game supplies callbacks, on a fixed step with variable-rate update and rendering.'],
+  ['Collision', 'AABB overlap detection with layers and callbacks. It reports hits and leaves movement to you.'],
+  ['Animation and audio', 'Data-driven sprite clips and atlases in JSON. Music and sound effects through miniaudio.'],
+  ['Input and UI', 'Keyboard and mouse, with touch on iOS and web. A small retained-mode UI with panels, labels, images and buttons.'],
+  ['Multiplayer', 'A game server module, UDP and TCP sockets, a binary game protocol and a content server. On native platforms for now, not yet on web.'],
+  ['Tooling', 'An asset cook, a content server, a test framework, and core libraries for math, fixed-point numbers, random numbers and files.'],
+];
+
+const platforms = [
+  ['Windows', 'DirectX 12', 'Supported'],
+  ['macOS', 'Metal 4', 'Supported on Apple silicon, macOS 26+'],
+  ['iOS', 'Metal 4', 'Supported on iPhone, iOS 26+'],
+  ['Web', 'WebGPU', 'Supported, without networking'],
+  ['Linux', 'None yet', 'Servers and headless clients only'],
+  ['Android', 'Vulkan', 'Planned'],
+];
+
+const principles = [
+  'No exceptions and no RTTI. Failures come back as return values.',
+  'Caller-owned, fixed-capacity memory over growing containers.',
+  'No singletons. Systems receive explicit context.',
+  'A general engine first. No API is shaped around a single game.',
+  'Games depend on the engine, and never the other way round.',
+];
+---
+
+<Base>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>A handcrafted C++ game engine.</h1>
+        <p class="lede">
+          Minimal, fully open source, and built for AI to create games with quickly. Multiplayer included.
+        </p>
+        <div class="actions">
+          <a class="button" href="/play/">Play the demos</a>
+          <a href="/docs/">Read the docs</a>
+        </div>
+        <p class="status">Version 0.1, in early development by one person.</p>
+      </div>
+      <figure class="hero-art">
+        <img src="/images/galaxy.jpg" width="900" height="780" alt="A spiral galaxy of thousands of sprites, drawn by the Graphics Stress sample." />
+        <figcaption>Graphics Stress, one of the demos below.</figcaption>
+      </figure>
+    </section>
+
+    <section class="pillars" aria-label="What makes Moksha different">
+      {pillars.map((pillar) => (
+        <div>
+          <h2>{pillar.name}</h2>
+          <p>{pillar.text}</p>
+          {pillar.link && <p class="pillar-link"><a href={pillar.link.href}>{pillar.link.label}</a></p>}
+        </div>
+      ))}
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <h2>Play</h2>
+        <p>These run right here in your browser, with WebGPU.</p>
+      </div>
+      <GameList />
+    </section>
+
+    <section class="block split">
+      <div class="block-head">
+        <h2>Write a game</h2>
+        <p>A game is a class with callbacks, in its own repository. This one moves a sprite with the arrow keys.</p>
+        <p><a href="/docs/getting-started/">Getting started</a></p>
+      </div>
+      <div class="code"><Code code={snippet} lang="cpp" theme="vesper" /></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><h2>What’s in it</h2></div>
+      <dl class="features">
+        {features.map(([name, text]) => (
+          <div>
+            <dt>{name}</dt>
+            <dd>{text}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="block split">
+      <div>
+        <div class="block-head"><h2>Platforms</h2></div>
+        <table>
+          <thead><tr><th>Target</th><th>Graphics</th><th>Status</th></tr></thead>
+          <tbody>
+            {platforms.map(([target, api, status]) => (
+              <tr><td>{target}</td><td>{api}</td><td>{status}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="block-head"><h2>Principles</h2></div>
+        <ul class="principles">{principles.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 72px);
+    align-items: center;
+    padding: clamp(32px, 6vw, 72px) 0 clamp(48px, 7vw, 88px);
+  }
+  h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1; letter-spacing: -0.022em; }
+  .lede { max-width: 44ch; margin-top: 26px; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.55; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 32px; }
+  .status { margin-top: 28px; color: var(--muted); font-size: 0.875rem; }
+  .hero-art { margin: 0; }
+  .hero-art img { display: block; width: 100%; height: auto; }
+  figcaption { margin-top: 10px; color: var(--muted); font-size: 0.8125rem; }
+
+  .pillars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px clamp(24px, 3vw, 40px); padding-top: 28px; border-top: 1px solid var(--rule); }
+  .pillars h2 { font-size: 1.5rem; line-height: 1.2; }
+  .pillars p { margin-top: 12px; color: var(--muted); font-size: 0.9375rem; }
+  .pillars .pillar-link { color: var(--accent); }
+
+  .block { padding-top: clamp(48px, 7vw, 88px); }
+  .block-head { margin-bottom: 26px; }
+  h2 { font-size: clamp(2rem, 4vw, 2.75rem); }
+  .block-head p { max-width: 46ch; margin-top: 12px; color: var(--muted); }
+  .block-head p a { color: var(--accent); }
+
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: clamp(32px, 6vw, 72px); }
+  .split:last-of-type { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .code { min-width: 0; }
+  .code :global(pre) { margin: 0; }
+
+  .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(32px, 6vw, 72px); margin: 0; border-top: 1px solid var(--rule); }
+  .features div { padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  dt { font: 400 1.25rem/1.3 var(--serif); }
+  dd { margin: 6px 0 0; color: var(--muted); font-size: 0.9375rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  th, td { padding: 9px 14px 9px 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+  thead th { border-top: 1px solid var(--rule); color: var(--muted); font-weight: 500; }
+  .principles { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); font-size: 0.9375rem; }
+  .principles li { padding: 9px 0; border-bottom: 1px solid var(--rule); }
+
+  @media (max-width: 1000px) {
+    .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 860px) {
+    .hero, .split, .split:last-of-type, .features { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .pillars { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

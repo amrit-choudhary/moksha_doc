@@ -1,0 +1,55 @@
+---
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import { ENGINE_REPO } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Moksha is a handcrafted, fully open source C++ game engine with no dependencies to install, multiplayer included, built for AI to create games with quickly. Play its sample games in your browser.',
+} = Astro.props;
+
+const pageTitle = title ? `${title} · Moksha` : 'Moksha game engine';
+const path = Astro.url.pathname;
+const section = path.startsWith('/docs') ? 'docs' : path.startsWith('/play') ? 'play' : '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="wordmark" href="/">moksha</a>
+      <nav aria-label="Main">
+        <a href="/docs/" aria-current={section === 'docs' ? 'page' : undefined}>Docs</a>
+        <a href="/play/" aria-current={section === 'play' ? 'page' : undefined}>Play</a>
+        <a href={ENGINE_REPO}>GitHub</a>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>Moksha, by Amrit Choudhary. MIT licence.</span>
+      <span><a href={ENGINE_REPO}>Engine</a> <a href="https://github.com/amrit-choudhary/moksha_samples">Samples</a></span>
+    </footer>
+  </body>
+</html>

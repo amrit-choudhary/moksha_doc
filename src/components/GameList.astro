@@ -1,0 +1,19 @@
+---
+import { games } from '../data/games';
+---
+
+<ol class="game-list">
+  {
+    games.map((game, index) => (
+      <li>
+        <a href={`/play/${game.slug}/`}>
+          <span class="game-num">{String(index + 1).padStart(2, '0')}</span>
+          <img class="game-thumb" src={`/images/games/${game.slug}-thumb.jpg`} alt="" width="96" height="96" loading="lazy" />
+          <span class="game-title">{game.title}</span>
+          <span class="game-blurb">{game.blurb}</span>
+          <span class="game-input">{game.inputLabel}</span>
+        </a>
+      </li>
+    ))
+  }
+</ol>

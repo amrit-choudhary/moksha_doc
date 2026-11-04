@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import Doc from '../../layouts/Doc.astro';
+
+const pages = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Doc title="Docs" description="How to write, build and ship a game on Moksha.">
+  <p>Moksha is in early development, so expect the API to change. New here? Start with <a href="/docs/getting-started/">Getting started</a>. The engine’s headers open with short contract comments, and there is no generated API reference yet.</p>
+  <ul>
+    {pages.map((page) => (
+      <li><a href={`/docs/${page.id}/`}>{page.data.title}</a>: {page.data.description}</li>
+    ))}
+  </ul>
+</Doc>
