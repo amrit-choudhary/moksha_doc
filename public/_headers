@@ -8,6 +8,8 @@ https://:project.pages.dev/*
 
 # Cloudflare doesn't compress application/octet-stream, the default for these packed game files.
 # The game loads them as raw bytes, so a type that gets compressed changes nothing else.
+/demos/prism_drop/Sample_PrismDrop.data
+  Content-Type: text/plain
 /demos/tower_climb/Sample_TowerClimb.data
   Content-Type: text/plain
 /demos/survivors/Sample_Survivors.data

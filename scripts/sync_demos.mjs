@@ -4,7 +4,7 @@ import { cp, mkdir, readdir, rm, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-const SLUGS = ['tower_climb', 'survivors', 'evolution', 'graphics_stress', 'ui_demo'];
+const SLUGS = ['prism_drop', 'tower_climb', 'survivors', 'evolution', 'graphics_stress', 'ui_demo'];
 const KEEP = ['.html', '.js', '.wasm', '.data'];
 
 const source = resolve(
